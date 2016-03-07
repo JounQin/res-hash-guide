@@ -1,0 +1,2 @@
+!function(){var e="/GitHub/res-hash-guide",r=e+"/dist",o=-1===location.href.indexOf(r);require.config({urlArgs:o?"hashVersion":"undefined"==typeof manifest||function(e,o){return 0===o.indexOf(r)&&(o=o.replace(r+"/","")),manifest[o]},baseUrl:r,waitSeconds:0,paths:{jquery:"js/jquery-1.12.1",bootstrap:"js/bootstrap"},shim:{bootstrap:{deps:["jquery"]}}}),require(["bootstrap"],function(){console.log($)})}();
+//# sourceMappingURL=index-config.js.map

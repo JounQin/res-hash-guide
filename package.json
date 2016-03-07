@@ -1,0 +1,45 @@
+{
+  "name": "res-hash-guide",
+  "version": "0.0.1",
+  "description": "HTML 资源引入 hashVersion 指南，支持静态页、动态页、requireJs 等多种方式。",
+  "keywords": [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "hash-version"
+  ],
+  "homepage": "https://github.com/JounQin",
+  "bugs": {
+    "url": "https://github.com/JounQin/res-hash-guide/issues",
+    "email": "liujiaren1992@vip.qq.com"
+  },
+  "license": "Apache-2.0",
+  "author": "JounQin",
+  "main": "gulpfile.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JounQin/res-hash-guide.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "autoprefixer": "^6.3.3",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-cssnano": "^2.1.1",
+    "gulp-insert": "^0.5.0",
+    "gulp-json-hash-manifest": "^1.0.0",
+    "gulp-less": "^3.0.5",
+    "gulp-notify": "^2.2.0",
+    "gulp-postcss": "^6.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-rimraf": "^0.2.0",
+    "gulp-sass": "^2.2.0",
+    "gulp-shell": "^0.5.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.3"
+  }
+}

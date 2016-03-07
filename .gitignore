@@ -30,4 +30,10 @@ node_modules
 .npm
 
 # Optional REPL history
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
 .node_repl_history
