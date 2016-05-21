@@ -1,7 +1,8 @@
 var gulp = require('gulp');
 var autoprefixer = require('autoprefixer');
-var cssnano = require('gulp-cssnano');
+var cleancss = require('gulp-clean-css');
 var concat = require('gulp-concat');
+var del = require('del');
 var hashManifest = require('gulp-json-hash-manifest');
 var insert = require('gulp-insert');
 var less = require('gulp-less');
@@ -9,7 +10,6 @@ var notify = require('gulp-notify');
 var postcss = require('gulp-postcss');
 var rename = require('gulp-rename');
 var replace = require('gulp-replace');
-var rimraf = require('gulp-rimraf');
 var shell = require('gulp-shell');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
@@ -21,7 +21,7 @@ gulp.task('scss', function () {
     return gulp.src('src/scss/*.scss')
         .pipe(sourcemaps.init())
         .pipe(sass())
-        .pipe(cssnano({safe: true}))
+        .pipe(cleancss())
         .pipe(postcss([autoprefixer({browsers: '> 1% in CN'})]))
         .pipe(sourcemaps.write('.', {
             includeContent: false,
@@ -34,7 +34,7 @@ gulp.task('less', function () {
     return gulp.src(['src/less/*.less', '!src/less/bootstrap.less'])
         .pipe(sourcemaps.init())
         .pipe(less())
-        .pipe(cssnano({safe: true}))
+        .pipe(cleancss())
         .pipe(postcss([autoprefixer({browsers: '> 1% in CN'})]))
         .pipe(sourcemaps.write('.', {
             includeContent: false,
@@ -47,7 +47,7 @@ gulp.task('bootstrap-less', function () {
     return gulp.src('src/less/bootstrap.less')
         .pipe(sourcemaps.init())
         .pipe(less())
-        .pipe(cssnano({safe: true}))
+        .pipe(cleancss())
         .pipe(postcss([autoprefixer({browsers: '> 1% in CN'})]))
         .pipe(sourcemaps.write('.', {
             includeContent: false,
@@ -115,27 +115,37 @@ gulp.task('manifestJs', function () {
 });
 
 gulp.task('replace', function () {
-    var manifest = require('./dist/hash-manifest.json');
+    var manifest = require('./dist/hash-manifest.json'),
+        defaultEmpty = function (str) {
+            return str || '';
+        };
     return gulp.src('src/**/*.html')
-        .pipe(replace(/\/([\w\-\.])+(['"]\)})?\?(hashversion)/gi, function (matched) {
-            matched = matched.substring(1, matched.length - 12);
-            var fileName = matched.replace(/['"]\)}/, '');
-            for (var key in manifest) {
-                if (key.endsWith('/' + fileName) || key === fileName) {
-                    return '/' + matched + '?' + manifest[key];
+        .pipe(replace(/((\.\.\/)*)(dist\/)([\w][\./\w\-]+\.(css|js))/gi, function (matched, $1, $2, $3, $4) {
+            'use strict';
+            let filePath = $4,
+                hashVersion = manifest[filePath];
+            
+            if (!hashVersion) {
+                for (var path in manifest) {
+                    if (!manifest.hasOwnProperty(path)) continue;
+                    if (path.endsWith(filePath)) {
+                        hashVersion = manifest[path];
+                        break;
+                    }
                 }
             }
+
+            return defaultEmpty($1) + defaultEmpty($3) + $4 + '?' + defaultEmpty(hashVersion);
         }))
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('rimraf', function () {
-    return gulp.src('dist')
-        .pipe(rimraf({read: false}));
+gulp.task('clean', function () {
+    return del('dist');
 });
 
 gulp.task('deploy', shell.task([
-    'gulp rimraf',
+    'gulp clean',
     'gulp scss less js bootstrap-less bootstrap-js',
     'gulp manifestJson',
     'gulp replaceManifestJson',
