@@ -5,7 +5,7 @@
     require.config({
         urlArgs: dev ? 'hashVersion' : typeof manifest === 'undefined' || function (moduleName, url) {
             url.indexOf(rootDir) === 0 && (url = url.replace(rootDir + '/', ''));
-            return manifest[url]
+            return '?' + manifest[url]
         },
         baseUrl: rootDir,
         waitSeconds: 0,
