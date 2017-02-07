@@ -1,4 +1,6 @@
 # res-hash-guide
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/JounQin/res-hash-guide.svg)](https://greenkeeper.io/)
 HTML 资源引入 hashVersion 指南，支持静态页、动态页、requireJs 等多种方式。
 
 #### 注意: 此项目只是为实现资源文件加载版本号 hash 化提供一个参考方案，实际项目中请根据需要进行二次调整。
