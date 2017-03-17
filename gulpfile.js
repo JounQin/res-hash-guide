@@ -1,21 +1,21 @@
-var gulp = require('gulp');
-var autoprefixer = require('autoprefixer');
-var cleancss = require('gulp-clean-css');
-var concat = require('gulp-concat');
-var del = require('del');
-var hashManifest = require('gulp-json-hash-manifest');
-var insert = require('gulp-insert');
-var less = require('gulp-less');
-var notify = require('gulp-notify');
-var postcss = require('gulp-postcss');
-var rename = require('gulp-rename');
-var replace = require('gulp-replace');
-var shell = require('gulp-shell');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
-var uglify = require('gulp-uglify');
+const gulp = require('gulp');
+const autoprefixer = require('autoprefixer');
+const cleancss = require('gulp-clean-css');
+const concat = require('gulp-concat');
+const del = require('del');
+const hashManifest = require('gulp-json-hash-manifest');
+const insert = require('gulp-insert');
+const less = require('gulp-less');
+const notify = require('gulp-notify');
+const postcss = require('gulp-postcss');
+const rename = require('gulp-rename');
+const replace = require('gulp-replace');
+const shell = require('gulp-shell');
+const sass = require('gulp-sass');
+const sourcemaps = require('gulp-sourcemaps');
+const uglify = require('gulp-uglify');
 
-var CONTEXT = '/GitHub/res-hash-guide';
+const CONTEXT = '/GitHub/res-hash-guide';
 
 gulp.task('scss', function () {
     return gulp.src('src/scss/*.scss')
@@ -68,7 +68,7 @@ gulp.task('js', function () {
 });
 
 gulp.task('bootstrap-js', function () {
-    var bootstrapArr = [
+    const bootstrapArr = [
         'transition',
         'alert',
         'button',
@@ -109,24 +109,24 @@ gulp.task('replaceManifestJson', function () {
 
 gulp.task('manifestJs', function () {
     return gulp.src('dist/hash-manifest.json')
-        .pipe(insert.prepend('var manifest='))
+        .pipe(insert.prepend('const manifest='))
         .pipe(rename({extname: '.js'}))
         .pipe(gulp.dest('dist'));
 });
 
 gulp.task('replace', function () {
-    var manifest = require('./dist/hash-manifest.json'),
+    const manifest = require('./dist/hash-manifest.json'),
         defaultEmpty = function (str) {
             return str || '';
         };
     return gulp.src('src/**/*.html')
-        .pipe(replace(/((\.\.\/)*)(dist\/)([\w][\./\w\-]+\.(css|js))/gi, function (matched, $1, $2, $3, $4) {
+        .pipe(replace(/((\.\.\/)*)(dist\/)([\w][./\w\-]+\.(css|js))/gi, function (matched, $1, $2, $3, $4) {
             'use strict';
             let filePath = $4,
                 hashVersion = manifest[filePath];
             
             if (!hashVersion) {
-                for (var path in manifest) {
+                for (const path in manifest) {
                     if (!manifest.hasOwnProperty(path)) continue;
                     if (path.endsWith(filePath)) {
                         hashVersion = manifest[path];
